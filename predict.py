@@ -45,16 +45,21 @@ def predict(model_data_path, image_path):
         pred = sess.run(net.get_output(), feed_dict={input_node: img})
         
         # Plot result
-        fig = plt.figure()
-        ii = plt.imshow(pred[0,:,:,0], interpolation='nearest')
+        #fig = plt.figure()
+        #ii = plt.imshow(pred[0,:,:,0], interpolation='nearest')
         #fig.colorbar(ii)
-        plt.savefig('final.jpg')
-        image = cv2.imread('final.jpg')
-        graysc = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        cv2.imwrite('finalgray.jpg',graysc)
+        # plt.savefig('final.jpg')
+        # image = cv2.imread('final.jpg')
+        # graysc = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        # cv2.imwrite('finalgray.jpg',graysc)
 
         #New: Get only image
         plt.imsave('output.jpg', pred[0,:,:,0])
+        image = cv2.imread('output.jpg', cv2.IMREAD_UNCHANGED)
+        dim = (width, height)
+        imagerz = cv2.resize(image, dim, interpolation = cv2.INTER_AREA)
+        graysc = cv2.cvtColor(imagerz, cv2.COLOR_BGR2GRAY)
+        cv2.imwrite('outputgray.jpg',graysc)
 
     return pred
         
