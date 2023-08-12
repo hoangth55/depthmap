@@ -1,0 +1,6 @@
+tensorflow==1.12.0
+#opencv==3.4.0.14 pip install opencv-python==3.4.0.14
+matplotlib==2.2.2
+Pillow==5.1.0
+numpy==1.14.3
+argparse==1.1
