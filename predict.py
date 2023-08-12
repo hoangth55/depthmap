@@ -54,12 +54,12 @@ def predict(model_data_path, image_path):
         # cv2.imwrite('finalgray.jpg',graysc)
 
         #New: Get only image
-        plt.imsave('output.jpg', pred[0,:,:,0])
-        image = cv2.imread('output.jpg', cv2.IMREAD_UNCHANGED)
+        plt.imsave('img/3cl.jpg', pred[0,:,:,0])
+        image = cv2.imread('img/3cl.jpg', cv2.IMREAD_UNCHANGED)
         dim = (width, height)
         imagerz = cv2.resize(image, dim, interpolation = cv2.INTER_AREA)
         graysc = cv2.cvtColor(imagerz, cv2.COLOR_BGR2GRAY)
-        cv2.imwrite('outputgray.jpg',graysc)
+        cv2.imwrite('img/3_depth.jpg',graysc)
 
     return pred
         
