@@ -1,4 +1,4 @@
 # ignore all Mpodels
 /models/NYU_FCRN.ckpt.meta
 /models/NYU_FCRN.ckpt.data-00000-of-00001
-/img/
+/img/*
