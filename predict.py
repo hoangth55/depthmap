@@ -5,6 +5,7 @@ import tensorflow as tf
 from matplotlib import pyplot as plt
 from PIL import Image
 import cv2
+from pathlib import Path
 
 import models
 
@@ -54,12 +55,16 @@ def predict(model_data_path, image_path):
         # cv2.imwrite('finalgray.jpg',graysc)
 
         #New: Get only image
-        plt.imsave('img/3cl.jpg', pred[0,:,:,0])
-        image = cv2.imread('img/3cl.jpg', cv2.IMREAD_UNCHANGED)
+        filename = Path(image_path).stem
+        #print(filename)
+        depth_path_image = f"img/{filename}_depth.jpg"
+        depth_path_image_color = f"img-depth-color/{filename}_depth_color.jpg"
+        plt.imsave(depth_path_image_color, pred[0,:,:,0])
+        image = cv2.imread(depth_path_image_color, cv2.IMREAD_UNCHANGED)
         dim = (width, height)
         imagerz = cv2.resize(image, dim, interpolation = cv2.INTER_AREA)
         graysc = cv2.cvtColor(imagerz, cv2.COLOR_BGR2GRAY)
-        cv2.imwrite('img/3_depth.jpg',graysc)
+        cv2.imwrite(depth_path_image,graysc)
 
     return pred
         
@@ -71,8 +76,16 @@ def main():
     parser.add_argument('image_paths', help='Directory of images to predict')
     args = parser.parse_args()
 
-    # Predict the image
-    pred = predict(args.model_path, args.image_paths)
+    directory = 'img-raw/'
+    for root, directories, files in os.walk(directory):
+        for filename in files:
+            # Join the two strings in order to form the full filepath.
+            #filepath = os.path.join(root, filename)
+            #print(filename)
+            #print(filepath)
+
+            # Predict the image
+            pred = predict(args.model_path, filename)
     
     os._exit(0)
 
