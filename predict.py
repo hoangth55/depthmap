@@ -9,29 +9,28 @@ from pathlib import Path
 
 import models
 
-def predict(model_data_path, image_path):
-
     
-    # Default input size
-    height = 1080#228
-    width = 1920#304
-    channels = 3
-    batch_size = 1
-   
+# Default input size
+height = 1080#228
+width = 1920#304
+channels = 3
+batch_size = 1
+
+# Create a placeholder for the input image
+input_node = tf.placeholder(tf.float32, shape=(None, height, width, channels))
+
+# Construct the network
+net = models.ResNet50UpProj({'data': input_node}, batch_size, 1, False)
+        
+
+def predict(model_data_path, image_path):   
     # Read image
     img = Image.open(image_path)
     #img = img.resize([width,height], Image.ANTIALIAS)
     img = np.array(img).astype('float32')
     img = np.expand_dims(np.asarray(img), axis = 0)
-   
-    # Create a placeholder for the input image
-    input_node = tf.placeholder(tf.float32, shape=(None, height, width, channels))
 
-    # Construct the network
-    net = models.ResNet50UpProj({'data': input_node}, batch_size, 1, False)
-        
     with tf.Session() as sess:
-
         # Load the converted parameters
         print('Loading the model')
 
@@ -80,12 +79,12 @@ def main():
     for root, directories, files in os.walk(directory):
         for filename in files:
             # Join the two strings in order to form the full filepath.
-            #filepath = os.path.join(root, filename)
+            filepath = os.path.join(root, filename)
             #print(filename)
             #print(filepath)
 
             # Predict the image
-            pred = predict(args.model_path, filename)
+            pred = predict(args.model_path, filepath)
     
     os._exit(0)
 
